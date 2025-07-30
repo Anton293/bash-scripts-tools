@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+DIR_NAME=$(basename "$(dirname "$(realpath "$1")")")
+
+
+DESKTOP="$HOME/Desktop/$DIR_NAME.desktop"
+
+echo "[Desktop Entry]" > "$DESKTOP"
+echo "Type=Application" >> "$DESKTOP"
+echo "Name=$DIR_NAME" >> "$DESKTOP"
+echo "Terminal=False" >> "$DESKTOP"
+
+
+for FILE in "$@"; do
+    BASENAME=$(basename "$FILE")
+    NAME="${BASENAME%.*}"
+
+    ABS_PATH=$(realpath "$FILE")
+    DIR=$(dirname "$FILE")
+
+
+    ICON=""
+    for ext in png jpg ico; do
+        if [[ $ABS_PATH =~ ".$ext" ]]; then
+            ICON="$ABS_PATH"
+            echo "Icon=$ICON" >> "$DESKTOP"
+            break
+        fi
+    done
+
+    
+    [[ -z "$ICON" ]] && echo "Exec=sh \"$ABS_PATH\"" >> "$DESKTOP"
+
+    
+done
+
+chmod +x "$DESKTOP"
