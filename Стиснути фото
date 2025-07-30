@@ -11,7 +11,7 @@ for FILE in "$@"; do
     DIR=$(dirname "$FILE")
 
     
-    [[ $ABS_PATH =~ ".png" ]] && echo "hi
+    [[ $ABS_PATH =~ ".png" ]] && echo "hi"
 
     
 done
